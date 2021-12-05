@@ -1,0 +1,16 @@
+data/
+fdtd/
+*.o
+*.for
+*.dat
+*.asc
+*.tgz
+fort.7
+main
+00readme.txt
+*.po
+main_p
+gmon.out
+.cproject
+.project
+.settings/
