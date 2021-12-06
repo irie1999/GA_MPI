@@ -54,15 +54,12 @@ double fitting(double parameter_beta_1, double parameter_beta_2,
     return v;
 }
 
-void cal_ind(Agent *p, double **S){
-    for(int i = 0; i < Number_of_Individual; i++){
-        std::cout << "個体= " << i << std::endl; 
-        p[i].set_parameter();  /* 2進数から10進数に変換*/
-        p[i].score  /*FDTDの計算,返値がスコア*/
-            = fitting( p[i].parameter_beta_1, p[i].parameter_beta_2,
-                       p[i].parameter_h_prime_1, p[i].parameter_h_prime_2, S); 
+void cal_ind(Agent *p, double **S, int i, double **paramter){
+    std::cout << "個体= " << i << std::endl; 
+    //p[i].set_parameter();  /* 2進数から10進数に変換*/
+    p[i].score  /*FDTDの計算,返値がスコア*/
+        = fitting(paramter[0][i], parameter[1][i], parameter[2][i], parameter[3][i], S); 
                     
-    }
 }
 
 void create_ind(Agent *agent){

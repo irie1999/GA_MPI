@@ -17,30 +17,83 @@ int main(int argc, char **argv){
 
     const int rank = MPI::COMM_WORLD.Get_rank();
     const int size = MPI::COMM_WORLD.Get_size();
+    
+    /*MPI parameter*/
+    constexpr int Range { Number_of_Individual / size };
 
-    std::cout << "rank= " << rank << ", size= " << size << std::endl;
+    //std::cout << "rank= " << rank << ", size= " << size << std::endl;
     
     double **S = allocate_memory2d(3, 801, 0.0);  /*観測した電界強度の変化率*/
+    // double paramter_0[Number_of_Individual];
+    // double paramter_1[Number_of_Individual];
+    // double paramter_2[Number_of_Individual];
+    // double paramter_3[Number_of_Individual];
+    double parameter[4][Number_of_Individual];
     double max_parameter[4];  /*最終世代のスコアの最大値のパラメーターを格納*/ 
     double MAX[Number_of_Generation + 1];   /*最大値を格納*/
     double score_average[Number_of_Generation + 1]; /*平均値を格納*/
     double roulette[Number_of_Individual];  /*ルーレット*/
     Agent agent[2][Number_of_Individual];   /*個体*/
- 
+
+    
     create_ind(agent[0]); /*初期ランダム遺伝子の作成*/
+    
 
     input(S,1);  /*t_1の時の観測した電界強度*/
     input(S,2);  /*t_2の時の観測した電界強度*/
 
-    std::cout << "世代=" << Number_of_Generation << std::endl
-              << "個体=" << Number_of_Individual << std::endl;
+    // std::cout << "世代=" << Number_of_Generation << std::endl
+    //           << "個体=" << Number_of_Individual << std::endl;
     
     for(int n_generation = 0; n_generation < Number_of_Generation - 1; n_generation++){
-        std::cout << "世代= " << n_generation << std::endl;
+        //std::cout << "世代= " << n_generation << std::endl;
         const int PARENT { n_generation % 2 };
         const int CHILD { (n_generation + 1) % 2};
+
+        /*rank0がパラメタを求める*/
+        if(rank == 0){
+            for(int i = rank * Range; i < (rank + 1) * Range; i++){ /*Range=3*/
+                agent[PARENT][i].set_parameter();
+                // parameter_0[i] = agent[PARENT][i].parameter_beta_1;
+                // parameter_1[i] = agent[PARENT][i].parameter_beta_2;
+                // parameter_2[i] = agent[PARENT][i].parameter_h_prime_1;
+                // parameter_3[i] = agent[PARENT][i].parameter_h_prime_2;
+                parameter[0][i] = agent[PARENT][i].parameter_beta_1;
+                parameter[1][i] = agent[PARENT][i].parameter_beta_2;
+                parameter[2][i] = agent[PARENT][i].parameter_h_prime_1;
+                parameter[3][i] = agent[PARENT][i].parameter_h_prime_2;
+            }   
+        }
+
+        /*rank0から各rankへパラメタを送信*/
+        if(rank == 0){
+            for(int r =1; r < size; r++){
+                // MPI::COMM_WORLD.Send( paramter_0 + r*Range, Range, MPI::double, r, 0);
+                // MPI::COMM_WORLD.Send( paramter_1 + r*Range, Range, MPI::double, r, 0);
+                // MPI::COMM_WORLD.Send( paramter_2 + r*Range, Range, MPI::double, r, 0);
+                // MPI::COMM_WORLD.Send( paramter_3 + r*Range, Range, MPI::double, r, 0);
+                MPI::COMM_WORLD.Send( paramter[0] + r*Range, Range, MPI::double, r, 0);
+                MPI::COMM_WORLD.Send( paramter[1] + r*Range, Range, MPI::double, r, 0);
+                MPI::COMM_WORLD.Send( paramter[2] + r*Range, Range, MPI::double, r, 0);
+                MPI::COMM_WORLD.Send( paramter[3] + r*Range, Range, MPI::double, r, 0);
+            }
+        }
+        else{
+            // MPI::COMM_WORLD.Recv( paramter_0 + rank*Range, Range, MPI::double, 0, 0);
+            // MPI::COMM_WORLD.Recv( paramter_1 + rank*Range, Range, MPI::double, 0, 0);
+            // MPI::COMM_WORLD.Recv( paramter_2 + rank*Range, Range, MPI::double, 0, 0);
+            // MPI::COMM_WORLD.Recv( paramter_3 + rank*Range, Range, MPI::double, 0, 0);
+            MPI::COMM_WORLD.Recv( paramter[0] + rank*Range, Range, MPI::double, 0, 0);
+            MPI::COMM_WORLD.Recv( paramter[1] + rank*Range, Range, MPI::double, 0, 0);
+            MPI::COMM_WORLD.Recv( paramter[2] + rank*Range, Range, MPI::double, 0, 0);
+            MPI::COMM_WORLD.Recv( paramter[3] + rank*Range, Range, MPI::double, 0, 0);
+            
+        }
+
         /*スコアを計算*/
-        cal_ind(agent[PARENT], S);
+        for(int i = rank * Range; i < (rank + 1) * Range; i++){ /*全個体を各コアに分割*/
+        cal_ind(agent[PARENT], S, i, parameter);
+        }
         
         /*スコア順にソート*/
         sort_ind(agent[PARENT]);

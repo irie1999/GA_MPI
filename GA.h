@@ -17,7 +17,7 @@ constexpr int N_bit_parameters_h_prime { N_bit_parameter_h_prime_1 + N_bit_param
 
 constexpr double i32 { 4294967296.0 }; /* 2^32 */
 constexpr double MUTATION { 0.03 }; /* 突然変異の確率 */
-constexpr int Number_of_Individual { 15 };  /*n個体*/
+constexpr int Number_of_Individual { 18 };  /*n個体*/
 constexpr int Number_of_Generation { 10 };  /*n世代*/
 
 //constexpr int Max_Generation { 120 };
@@ -26,7 +26,6 @@ constexpr int GA_Nr { 801 };
 constexpr int M { 2 };
 constexpr double p_beta { 1.0 };
 constexpr double p_h_prime { 1.0 };
-
 
 void create_ind(class Agent *agent);
 void cal_ind(Agent *p, double **S);
