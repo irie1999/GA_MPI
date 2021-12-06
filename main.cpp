@@ -138,6 +138,7 @@ int main(int argc, char **argv){
     }
 
     deallocate_memory2d(S);
+    MPI::Finalize();
 
     return 0;
 
