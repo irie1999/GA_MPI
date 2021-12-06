@@ -54,11 +54,11 @@ double fitting(double parameter_beta_1, double parameter_beta_2,
     return v;
 }
 
-void cal_ind(Agent *p, double **S, int i, double **paramter){
+void cal_ind(Agent *p, double **S, int i, double **parameter, double *score){
     std::cout << "個体= " << i << std::endl; 
     //p[i].set_parameter();  /* 2進数から10進数に変換*/
-    p[i].score  /*FDTDの計算,返値がスコア*/
-        = fitting(paramter[0][i], parameter[1][i], parameter[2][i], parameter[3][i], S); 
+    //p[i].score  /*FDTDの計算,返値がスコア*/
+    score[i] = fitting(parameter[0][i], parameter[1][i], parameter[2][i], parameter[3][i], S); 
                     
 }
 

@@ -97,12 +97,12 @@ void cal_fdtd(double beta, double h_prime, int time, double **Ei_tm){
   double *Rs = new double [Nth + 1];
   double *Ls = new double [Nth + 1];
   initialize_surface_impedance(Rs, Ls);
-
+ 
   std::chrono::system_clock::time_point start_time = std::chrono::system_clock::now();
 
   ///時間ループ///
   for(int n = 1; n <= Nt; n++){
-
+    
     int NEW = (n+1) % 2;
     int OLD = n % 2;
     
@@ -133,17 +133,18 @@ void cal_fdtd(double beta, double h_prime, int time, double **Ei_tm){
       Er0[j] += Er[NEW][0][j] * std::exp( -1.0 * zj * OMG * t ) * Dt;
     }
 
-//     if( n % 10 == 0){
-//       std::cout << " " << n << " / " << Nt << " : " << Lp/1000 << "\n";
-// //      std::ofstream ofs_e("e_" + std::to_string(n) + ".dat");
-// //      for(int j = 0; j <= Nth - PML_L; j++){
-// //        ofs_e << j*.5 << " " << std::abs( Er0[j]) << "\n";
-// //      }
-// //      ofs_e.close();
-//     }
+   if( n % 100 == 0){
+       std::cout << " " << n << "\n";
+   }
+    // //      std::ofstream ofs_e("e_" + std::to_string(n) + ".dat");
+    // //      for(int j = 0; j <= Nth - PML_L; j++){
+    // //        ofs_e << j*.5 << " " << std::abs( Er0[j]) << "\n";
+    // //      }
+    // //      ofs_e.close();
+    //     }
 
-}
-    
+  }
+
   for(int j = 0; j <= 2 * Nr_GA; j += 2){ /*Nr_GA=800 Nr_ini=100*/
     Ei_tm[time][j/2] = std::abs( Er0[j + 2 * Nr_ini] );
   }

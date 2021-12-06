@@ -87,7 +87,7 @@ void initialize_conductivity(Eigen::Matrix3d** C, Eigen::Matrix3d** F,
   /* 磁場の方向 */
   const double THE0 { B0.theta() };
   const double PHI0 { B0.phi() };
-  std::cout << THE0 * 180 / M_PI << ", " << PHI0 * 180 / M_PI << std::endl;
+  //std::cout << THE0 * 180 / M_PI << ", " << PHI0 * 180 / M_PI << std::endl;
 
   Eigen::Matrix3d R1, R2;
   R1<< cos(THE0), 0.0, sin(THE0),

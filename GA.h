@@ -28,7 +28,7 @@ constexpr double p_beta { 1.0 };
 constexpr double p_h_prime { 1.0 };
 
 void create_ind(class Agent *agent);
-void cal_ind(Agent *p, double **S);
+void cal_ind(Agent *p, double **S, int i, double **parameter, double *score);
 int bin2dec(const int N_bit_initial, const int N_bit_end, bool *binary);
 void compose_roulette(const int N, class Agent *agent, double *roulette, double *score_average, int n_generation);
 void crossover(int head, class Agent *p, class Agent *c, int *s);
