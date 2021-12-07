@@ -10,10 +10,10 @@ all: main
 
 
 main: $(OBJS)
-	mpic++ -o $@  $(OBJS) -fopenmp -O3
+	mpic++ -o $@  $(OBJS) -lmpi -fopenmp -O3
 
 %.o: %.cpp GA.h agent.h  fdtd2d.h
-	mpic++ -c $< -Wall -fopenmp -O3 -I.
+	mpic++ -c $< -Wall -lmpi -fopenmp -O3 -I.
 
 clean:
 	rm -rf *.o main

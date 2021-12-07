@@ -9,6 +9,7 @@
 #include "memory_allocate.h"
 
 int main(int argc, char **argv){
+
     std::random_device rnd;
     std::mt19937 mt(rnd());
     //std::mt19937 rnd(1); 
@@ -49,7 +50,7 @@ int main(int argc, char **argv){
 
         /*rank0がパラメタを求める*/
         if(rank == 0){
-            for(int i = rank * Range; i < (rank + 1) * Range; i++){ /*Range=3*/
+            for(int i = 0; i < Number_of_Individual; i++){ /*Range=3*/
                 agent[PARENT][i].set_parameter();
                 parameter[0][i] = agent[PARENT][i].parameter_beta_1;
                 parameter[1][i] = agent[PARENT][i].parameter_beta_2;
