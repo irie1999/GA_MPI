@@ -33,9 +33,9 @@ int main(int argc, char **argv){
     double roulette[Number_of_Individual];  /*ルーレット*/
     Agent agent[2][Number_of_Individual];   /*個体*/
 
-    
+    if(rank == 0){
     create_ind(agent[0]); /*初期ランダム遺伝子の作成*/
-    
+    }
 
     input(S,1);  /*t_1の時の観測した電界強度*/
     input(S,2);  /*t_2の時の観測した電界強度*/

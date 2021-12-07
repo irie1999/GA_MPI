@@ -6,7 +6,7 @@
 void input(double **S, int time){
 	/*ファイル読み込み*/
 	std::ifstream ifs;  // ファイル読み取り用ストリーム  
-	ifs.open("../data/Si_tm_" + std::to_string(time) + ".dat");	// ファイルオープン
+	ifs.open("Si_tm_" + std::to_string(time) + ".dat");	// ファイルオープン
 
 	if(ifs.fail()){	// ファイルオープンに失敗したらそこで終了
 		std::cerr << "ファイルを開けません\n";
